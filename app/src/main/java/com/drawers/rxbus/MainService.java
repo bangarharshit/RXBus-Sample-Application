@@ -2,6 +2,7 @@ package com.drawers.rxbus;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.drawers.EventBus;
 import com.drawers.rxbus.annotation.PerService;
@@ -30,6 +31,7 @@ public class MainService extends IntentService {
         MainApplication mainApplication = (MainApplication) getApplication();
         MainActivityComponent mainActivityComponent = DaggerMainService_MainActivityComponent.builder()
                 .appComponent(mainApplication.getAppComponent()).build();
+        mainActivityComponent.inject(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -38,7 +40,7 @@ public class MainService extends IntentService {
         mBaseEventEventBus.post(new BufferEvent(4));
         mBaseEventEventBus.post(new BufferEvent(5));
         mBaseEventEventBus.post(new LastEmitEvent(6));
-        mBaseEventEventBus.post(new SingleEvent(4));
+        mBaseEventEventBus.post(new SingleEvent(10));
     }
 
     @PerService

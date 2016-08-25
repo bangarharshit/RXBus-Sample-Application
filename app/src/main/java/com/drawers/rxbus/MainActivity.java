@@ -21,6 +21,7 @@ import com.drawers.rxbus.events.SingleEvent;
 import javax.inject.Inject;
 
 import dagger.Component;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         });
         mCompositeSubscription.add(mBaseEventEventBus
                 .observeEvents(LastEmitEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<LastEmitEvent, String>() {
                     @Override
                     public String call(LastEmitEvent lastEmitEvent) {
@@ -66,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 }));
         mCompositeSubscription.add(mBaseEventEventBus
                 .observeEvents(BufferEvent.class, SingleEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<BaseEvent>() {
                     @Override
                     public void call(BaseEvent baseEvent) {
-                        Toast.makeText(MainActivity.this, "Either buffer or single - base event", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Either buffer or single - base event" + baseEvent.timestamp, Toast.LENGTH_LONG).show();
                     }
                 }));
     }

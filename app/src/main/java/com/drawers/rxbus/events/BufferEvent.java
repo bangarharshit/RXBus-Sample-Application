@@ -8,6 +8,7 @@ public class BufferEvent extends BaseEvent {
     public final long timestamp;
 
     public BufferEvent(long timestamp) {
+        super(timestamp);
         this.timestamp = timestamp;
     }
 }
